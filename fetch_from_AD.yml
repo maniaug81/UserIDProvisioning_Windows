@@ -1,0 +1,18 @@
+- name: Disable Userid on AD
+  hosts: win
+  vars_files:
+    - vault-pass.yml
+
+  tasks:
+  - name: Fetch the AD EmployeeID from the Employee ID
+    win_shell:
+       "Get-WMIObject -class Win32_ComputerSystem| Select-Object -ExpandProperty username|ConvertTo-Json"
+    register: shelloutput
+
+  - name: Fetch the EmployeeID from the User ID
+    win_shell: Get-Host| select version|ConvertTo-Json
+    register: shelloutput1
+    ignore_errors: true
+
+  - debug:
+       msg: "shelloutput =  {{ shelloutput }} and Shelloutput1 = {{ shelloutput1 }}"
